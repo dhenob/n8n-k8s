@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: n8n-deploy
+  name: n8n-deploy
+  namespace: n8n-sts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: n8n-deploy
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: n8n-deploy
+    spec:
+      containers:
+      - image: n8nio/n8n
+        name: n8n
+        ports:
+        - containerPort: 5678
+        envFrom:
+        - secretRef:
+            name: n8n-secret
+        - configMapRef:
+            name: n8n-configmap
